@@ -91,7 +91,7 @@ void setup(){   //Run once on startup
 
 void loop(){    //Continuously executes
     analogMeasurement = analogRead(MYPIN_NUMBER);                       //Read the voltage on the pin. Returns 0-4095
-    voltage = DIVIDER_RATIO * ADC_MAX_V * analogMeasurement / ADC_MAX   //Convert raw ADC reading to voltage
+    voltage = DIVIDER_RATIO * ADC_MAX_V * analogMeasurement / ADC_MAX;  //Convert raw ADC reading to voltage
 }
 ```
 
@@ -110,9 +110,23 @@ Switching-mode voltage regulators use the electrical behaviors of an inductor to
 
 ### **Special Functions**: Special IO for addressable LEDs, sensors, or screens
 
+#### Addressable LED Strips (Neopixel)
+
+On Photon-based boards (Dash Controller, LPDRV, Sense), some pins have the capability of controlling addressable LED strips. These strips have special LEDs that can be controlled with just one data pin. The LED data pin is wired in series, and each pixel has an address and the ability to set a unique RGB value. These pixels can be used for turn signaling, brake lights, and other indicators. Since they can change colors to any value, you can use them to represent multiple signals. Check out [this tutorial](https://medium.com/@elonskolnik/arduino-uno-tutorial-neopixel-ring-setup-9fafc099c89a) for more information about Neopixels.
+
+#### Serial Peripheral interface (SPI)
+
+Some boards in the system use the SPI capability of the microcontroller to interface with electronics. The most common of these is the MCP2515 CAN Controller, which is detailed in the [next section](#can-bus-control-hardware-hardware-used-to-sendreceive-can-bus-messages). SPI is a parallel bus, meaning multiple devices can be connected to one set of microcontroller pins, it only requires one additional pin per extra peripheral to select which one is active. With the SPI bus, you can interface with a handful of other sensors and even hook up a small LCD screen. Check out [this tutorial](https://randomnerdtutorials.com/guide-to-1-8-tft-display-with-arduino/) about connecting a SPI LCD to an Arduino. On the [Ultra-Low-Power Driver Board](#ultra-low-power-driver-ulpdrv-p2-microcontroller), the SPI pins can be passed through to some of the Sense pins, which would allow you to connect an LCD and put it anywhere in the car! For example, you could mount this LCD near the J1772 EV charge port and display the battery pack charging percentage.
 
 ### **CAN Bus Control Hardware**: Hardware used to send/receive CAN Bus messages
 
+To transmit data using CAN Bus, two key components are needed: a CAN Controller and a CAN Transceiver. The controller is responsible for negotiating with the other CAN controllers in the network as to when packets can be sent on the bus. This controller is sometimes present in the silicon of the microcontroller (such as on the Photon), but an external controller (such as the MCP2515) is needed otherwise. The CAN controller sends out packets on its CAN TX line and receives packets on its RX line. These singals need to be then converted using the CAN Transceiver to CAN High and CAN Low. Below are the two combinations used on the DecentralizedLV system - one using the Photon's CAN Controller and one using a MCP2515 CAN Controller. For the CAN Transceiver, we use the [SN65HVD230](https://www.ti.com/product/SN65HVD230) from TI. 
+
+#### Photon CAN Hardware
+<img src="Pictures/Analyzer Photon.png" width="75%">
+
+#### MCP2515 CAN Hardware
+<img src="Pictures/Analyzer MCP.png" width="75%">
 
 ## CAN Bus Fundamental Concepts
 
@@ -775,6 +789,35 @@ The Camry Instrument Cluster was from a 2018 Camry, and we were able to determin
 - Commands the [LPDRV](#low-power-driver-lpdrv-photon-microcontroller) boards about the state of the headlights, turn signals, brakes, pumps, fans, etc based on the dashboard's switches.
 - Commands the [Camry Instrument Cluster](#camry-instrument-cluster) and changes its indicators based on data from other parts in the system (fuel level, BMS/Motor errors, headlights, speed)
 
+### [External] [Systems Architecture Computer]()
+
+The Systems Architecture Computer is a separate board which is connected to the same CAN Bus as the DecentralizedLV System. This board has the role of collecting telemetry data from the vehicle and relaying it to the pit. In Decentralied 1.0, this board had the responsibility of reading data from the Battery Management System and the Motor Controller on the High-Voltage CAN Bus and passing it to the DecentralizedLV CAN Bus.
+
+#### Hardware Capabilities
+- GPS Location Sensing
+- LoRa communication Radio
+- SPI Color LCD Control
+- Realtime Clock
+- Dual CAN Bus Controllers
+
+#### Important Roles (Decentralized 1.0)
+- Pass Battery Temperature, Battery Voltage, and State of Charge to the [Sense board](#sense-legacy-photon-microcontroller) to be displayed on the instrument cluster
+- Pass Motor RPM and Temperature to the [Sense board](#sense-legacy-photon-microcontroller) to be displayed on the instrument cluster
+
+
+### [Non-Decentralized] [Maximum Power Point Tracker]()
+
+The Maximum Power Point Tracker (MPPT) is a board that takes the voltage from the solar array and steps it up to charge the HV battery. This board measures the amount of power it is converting and relays it out over the CAN Bus. [To-Do] Include the CAN transmission data in the [Boards API](#boards-api).
+
+#### Image
+<img src="Pictures/MPPT_V1.JPG" width="75%">
+
+#### Hardware Capabilities
+- Boosts voltage of the solar array to 400V for charging the HV battery
+- CAN Bus transmission for sending telemetry information
+
+#### Important Roles
+- Relay solar charging voltage and solar charging power data over CAN to the DecentralizedLV system for displaying to the user
 
 ## Low Voltage System Layouts
 
