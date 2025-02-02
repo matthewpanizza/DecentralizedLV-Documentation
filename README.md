@@ -13,6 +13,7 @@ The Decentralized Low Voltage (DecentralizedLV) System is a series of CAN Bus eq
  - **[Software Architecture](#software-architecture)**: Information about common software practices used in the programming of the boards and quick links to get you started on understanding the microcontroller functions.
  - **[Simulation with the CAN Analyzer](#simulation-with-the-can-analyzer)**: Information about using the CAN Analyzer to control boards by emulating others
  - **[Boards API](#boards-api)**: Information about the Boards API, a module to standardize CAN communication between PCBs
+ - **[Board Models](#board-models)**: Descriptions of each of the different boards used in the DecentralizedLV system
  - **[Low Voltage System Layouts](#low-voltage-system-layouts)**: Schematics of the electrical systems in the vehicle for SPX, SPX with DecentralizedLV and Car 2.0
 
 ## Hardware Fundamental Concepts
@@ -682,7 +683,7 @@ The LPDRV boards reside on the corners of the vehicle and receive CAN Bus data f
 - In Decentralized 1.0, these control Neopixel strips on the headlights and the center brake light bar
 - Read switches/signals on the corners and pass them to the [Dash Controller](#dash-controller-photon-microcontroller) and other boards
 
-### [Ultra-Low-Power Driver (ULPDRV)](): P2 Microcontroller
+### [Ultra-Low-Power Driver (ULPDRV)](https://github.com/matthewpanizza/DecentralizedLV-ULPDRV): P2 Microcontroller
 
 The ULPDRV boards are a smaller version of the [LPDRV boards](#low-power-driver-lpdrv-photon-microcontroller) and have a similar functionality of controlling power to the accessory components. The ULPDRV boards do not have Neopixel capability. However, these boards have additional [Sense Pins](#sense-pins-read-binary-onoff-switches-or-12v-signals) that can also be configured (via a jumper bypass) to control a SPI device such as an LCD, or configured to have the device wake up when a signal rises to 12V.
 
