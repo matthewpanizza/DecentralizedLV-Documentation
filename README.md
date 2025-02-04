@@ -8,6 +8,7 @@ The Decentralized Low Voltage (DecentralizedLV) System is a series of CAN Bus eq
 ## Table of Contents
 
  - **[Hardware Fundamental Concepts](#hardware-fundamental-concepts)**: Information about common hardware elements used on the DecentralizedLV boards and how they connect to microcontrollers
+ - **[Vehicle Power Management Fundamentals](#vehicle-power-management-fundamentals): Information about power rails (off, accessory, ignition) and power-saving techniques
  - **[CAN Bus Fundamental Concepts](#can-bus-fundamental-concepts)**: Information about CAN Bus communication and encoding/decoding of messages
  - **[Setting Up the Development Environment](#setting-up-the-development-environment)**: Information about hwo to install Visual Studio Code and upload code to the microcontrollers used in the DecentralizedLV system
  - **[Software Architecture](#software-architecture)**: Information about common software practices used in the programming of the boards and quick links to get you started on understanding the microcontroller functions.
@@ -128,6 +129,36 @@ To transmit data using CAN Bus, two key components are needed: a CAN Controller 
 
 #### MCP2515 CAN Hardware
 <img src="Pictures/Analyzer MCP.png" width="75%">
+
+
+## Vehicle Power Management Fundamentals
+
+Most standard vehicles in production today use a set of wiring harnesses to distribute power throughout the car. These wiring harnesses power up the electronics based on the key switch position, either in an "Off", "Accessory" or "Ingition" power state. Ignition has all the electronics in Accessory, plus the electronics needed for vehicle motion (cooling systems, engine controllers, etc). In the accessory systems we're building, we use the same logic. These "Ignition" and "Accessory" states (i.e. groups of electronics that power up all at once) we call "Power Rails".
+
+<img src="Pictures/KeySwitch.png" width="50%">
+
+### Electrical System in Car 1.5 (SPX)
+
+The original electrical system in the Volkswagen conversion solar car used a set of busbars to distribute power. Wires had O-rings crimped on and then were screwed onto the terminals of the busbar. Each Power rail got a busbar. In addition to the Accessory and Ignition busbars, we also had an Always-On busbar which was directly connected to the battery (through a fuse of course!).
+
+<img src="Pictures/Busbars.JPG" width="50%">
+
+The traditional key switch would then supply power to the Accessories and Ignition busbars by turning on some relays which connected to the Always-On busbar. Common electronics on the Accessory busbar are the headlights, driver AC fan, and infotainment systems. Common electronics on the Ignition busbar were the motor controller, radiator pump and power steering pump. This system had a major disadvantage, however. These busbars were placed under the center dashboard, so *all* of the wires had to be routed there. The wiring harness was extremely messy and hard to follow, and large lengths of wire had to be run to reach the back of the car.
+
+### Conversion to Decentralized LV in Car 2.0
+
+The new DecentralizedLV system is aimed at reducing the wiring complexity of the electrical system and also to provide more granular control over which electronics are powered. The new system replaces the busbar wiring configuration with PCBs that distribute power using fewer wires. Using the [Power Controller](#power-controller-p2-microcontroller), the key switch mechanism is replaced with the push-to-start mechanism found in more modern cars. It determines the Accessory and Ignition state of the vehicle and has connectors that run to each of the corners of the vehicle for a Driver board (either [LPDRV](#low-power-driver-lpdrv-photon-microcontroller) or [ULPDRV](#ultra-low-power-driver-ulpdrv-p2-microcontroller)). The Driver boards on the corners are turned on by the Power Controller in the Accessory State, and the Accessory and Ignition signals are transmitted out in the CAN Bus data. 
+
+### Virtual Power Rails
+
+Using CAN Bus, we can re-create the "Power Rail" concept that was used in the busbar system to make a software-based "virtual" power rail. This is done on the corners of the vehicle using a Driver board, whose outputs can be triggered based on the Power Controller's Accessory and Ignition CAN Bus messages. The [Boards API](#boards-api) makes it even easier to access this data. Here's a code example from the [LPDRV Board](#low-power-driver-lpdrv-photon-microcontroller) of where this concept is used:
+
+```cpp
+digitalWrite(HP0, powerController.Acc);         //We want to turn on the MPPT whenever the Accessory bus is on. Use the Power Controller's accessory flag as a virtual power rail.
+...
+digitalWrite(HP2, powerController.Ign);         //iBooster Power. Turn this on whenever ignition is on
+```
+
 
 ## CAN Bus Fundamental Concepts
 
