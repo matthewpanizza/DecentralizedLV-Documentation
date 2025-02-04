@@ -8,7 +8,7 @@ The Decentralized Low Voltage (DecentralizedLV) System is a series of CAN Bus eq
 ## Table of Contents
 
  - **[Hardware Fundamental Concepts](#hardware-fundamental-concepts)**: Information about common hardware elements used on the DecentralizedLV boards and how they connect to microcontrollers
- - **[Vehicle Power Management Fundamentals](#vehicle-power-management-fundamentals): Information about power rails (off, accessory, ignition) and power-saving techniques
+ - **[Vehicle Power Management Fundamentals](#vehicle-power-management-fundamentals)**: Information about power rails (off, accessory, ignition) and power-saving techniques
  - **[CAN Bus Fundamental Concepts](#can-bus-fundamental-concepts)**: Information about CAN Bus communication and encoding/decoding of messages
  - **[Setting Up the Development Environment](#setting-up-the-development-environment)**: Information about hwo to install Visual Studio Code and upload code to the microcontrollers used in the DecentralizedLV system
  - **[Software Architecture](#software-architecture)**: Information about common software practices used in the programming of the boards and quick links to get you started on understanding the microcontroller functions.
