@@ -763,7 +763,7 @@ The Power Controller is responsible for controlling the state of the vehicle's e
 
 ### [High-Voltage Controller](https://github.com/matthewpanizza/DecentralizedLV-HVController): P2 Microcontroller
 
-The High-Voltage Controller is responsible for managing the interface from the high-voltage system to the low-voltage system. It primarily controls power to the Orion 2 Battery Management System (BMS). The Orion 2 has a set of pins which take 12V and will command the BMS to operate in a specific state. Upon powerup, the Orion will check the state of all the cells in the HV pack and will allow for power flow if the cells are OK. There is a charge enable and discharge enable signal which are set by the High-voltage Controller to tell the BMS that it wants to charge/discharge. The Orion also has a fault signal which changes state when the BMS has a fault, the HVController reads this and transmits it out to the rest of the DecentralizedLV system over CAN. This board also acts as a wiring harness for the more-complicated BMS wiring. 
+The High-Voltage Controller is responsible for managing the interface from the high-voltage system to the low-voltage system. It primarily controls power to the Orion 2 Battery Management System (BMS). The Orion 2 has a set of pins which take 12V and will command the BMS to operate in a specific state. Upon powerup, the Orion will check the state of all the cells in the HV pack and will allow for power flow if the cells are OK. There is a charge enable and discharge enable signal which are set by the High-voltage Controller to tell the BMS that it wants to charge/discharge. The Orion also has a fault signal which changes state when the BMS has a fault, the HVController reads this and transmits it out to the rest of the DecentralizedLV system over CAN. This board also acts as a wiring harness for the more-complicated BMS wiring.  Check out its [repository](https://github.com/matthewpanizza/DecentralizedLV-HVController) for more information about the High Voltage Components that connect to it.
 
 #### Block Diagram
 <img src="Pictures/HVControllerBlock.png" width="75%">
@@ -870,7 +870,7 @@ This section contains diagrams of the boards used in each revision of the Decent
 
 ## High Voltage Electrical Layout
 
-This section contains the diagrams of the connections for the high voltage equipment with the low voltage equipment.
+This section contains the diagrams of the connections for the high voltage equipment with the low voltage equipment.  Check out the [HV Controller repository](https://github.com/matthewpanizza/DecentralizedLV-HVController) for more information about the High Voltage Components.
 
 ### Decentralized 1.0 (SPX)
 
