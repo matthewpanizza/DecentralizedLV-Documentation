@@ -733,7 +733,7 @@ The ULPDRV boards are a smaller version of the [LPDRV boards](#low-power-driver-
 - Receives information from other PCBs in the system to power accessory components on corner of vehicle
 - Read switches/signals on the corners and pass them to the [Dash Controller](#dash-controller-photon-microcontroller) and other boards
 
-### [Power Controller](): P2 Microcontroller
+### [Power Controller](https://github.com/matthewpanizza/DecentralizedLV-PowerController): P2 Microcontroller
 
 The Power Controller is responsible for controlling the state of the vehicle's electrical system. It has the same state as a normal keyswitch-style car (Off, Accessory, Ignition and Start). It takes a push-to-start input from the driver to determine the state. It has a series of outputs which are connected to the other boards in the DecentralizedLV system (consider this a distribution hub), and will enable/disable power to boards in the system based on the state. It is also responsible for power management of the 12-Volt accessory battery, and will determine if the car should operate in a low-power state if the 12V battery is drained. This board is designed to always be powered and will enter a sleep state after power-off. Pressing any of the Sense inputs should wake it.
 
