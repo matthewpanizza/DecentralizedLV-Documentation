@@ -5,6 +5,8 @@ Documentation about how the Decentralized Low Voltage System works and how to se
 
 The Decentralized Low Voltage (DecentralizedLV) System is a series of CAN Bus equipped microcontrollers for powering accessory (12-Volt) components using fewer wires. The system takes input from the driver and other instrumentation and transmits it out on the CAN Bus. That data can then be decoded on other PCBs in the system to control power to components in other parts of the car. The various PCBs in the system have specialized functionality, but can all transmit and receive data, so information can be passed from one place in the vehicle to any other part very easily - hence the name "Decentralized".
 
+<img src="Pictures/DecentralizedLV_Car2.JPG" width="50%">
+
 ## Table of Contents
 
  - **[Hardware Fundamental Concepts](#hardware-fundamental-concepts)**: Information about common hardware elements used on the DecentralizedLV boards and how they connect to microcontrollers
